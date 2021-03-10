@@ -21,7 +21,7 @@
 					<!-- <view style="font-size: 40rpx;padding-bottom: 5rpx;color: #041B3D;">+</view> -->
 					<view >账号</view>
 				</view>
-				<input type="number" v-model="account" placeholder="请输入账号" maxlength="11"
+				<input type="text" v-model="account" placeholder="请输入账号" maxlength="11"
 					placeholder-class="input-placeholder" />
 				<view class="right os-center">
 					<image src="/static/other/1.png" mode="widthFix"></image>

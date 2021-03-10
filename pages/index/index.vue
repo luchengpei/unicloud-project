@@ -15,11 +15,11 @@
 		onLoad() {
 			this.uid = getApp().globalData.uid
 			this.uniLogin = getApp().globalData.uniLogin
-			// if(!this.uid) {
-			// 	uni.redirectTo({
-			// 		url:'../login/login'
-			// 	})
-			// }
+			if(!this.uid) {
+				uni.redirectTo({
+					url:'../login/login'
+				})
+			}
 		}
 	}
 </script>

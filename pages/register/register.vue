@@ -21,7 +21,7 @@
 					<!-- <view style="font-size: 40rpx;padding-bottom: 5rpx;color: #041B3D;">+</view> -->
 					<view >账号</view>
 				</view>
-				<input type="number" v-model="account" placeholder="请输入账号" maxlength="11"
+				<input type="text" v-model="account" placeholder="请输入账号" maxlength="11"
 					placeholder-class="input-placeholder" />
 				<view class="right os-center">
 					<image src="/static/other/1.png" mode="widthFix"></image>
@@ -55,21 +55,14 @@
 			}
 		},
 		methods: {
-
 			//密码框输入事件
 			passwordInput(e) {
 				this.passwordShow = e.detail.value=='' ? false : true
-			},
-
-			//密码状态 隐藏/显示
-			passwordStatus() {
-				this.passwordShow = !this.passwordShow
 			},
 			submit(){
 				uni.getUserInfo({
 					success: (user) => {
 						const {userInfo} = user
-						console.log(userInfo)
 						uniCloud.callFunction({
 							name:'user-center',
 							data:{
@@ -81,10 +74,6 @@
 								}
 							},
 							success: (res) => {
-								// uni.showModal({
-								// 	showCancel: false,
-								// 	content: res.result.msg
-								// })
 								if(res.result.code==0){
 									uni.setStorageSync('uniIdToken',res.result.token)
 									getApp().globalData.uid = res.result.uid

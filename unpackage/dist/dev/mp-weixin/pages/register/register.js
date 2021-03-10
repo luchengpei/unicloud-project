@@ -192,21 +192,14 @@ var _default =
 
   },
   methods: {
-
     //密码框输入事件
     passwordInput: function passwordInput(e) {
       this.passwordShow = e.detail.value == '' ? false : true;
-    },
-
-    //密码状态 隐藏/显示
-    passwordStatus: function passwordStatus() {
-      this.passwordShow = !this.passwordShow;
     },
     submit: function submit() {var _this = this;
       uni.getUserInfo({
         success: function success(user) {var
           userInfo = user.userInfo;
-          console.log(userInfo);
           uniCloud.callFunction({
             name: 'user-center',
             data: {
@@ -218,10 +211,6 @@ var _default =
 
 
             success: function success(res) {
-              // uni.showModal({
-              // 	showCancel: false,
-              // 	content: res.result.msg
-              // })
               if (res.result.code == 0) {
                 uni.setStorageSync('uniIdToken', res.result.token);
                 getApp().globalData.uid = res.result.uid;

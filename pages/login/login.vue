@@ -31,10 +31,14 @@
 				<view class="left os-center">
 					<view>密码</view>
 				</view>
-				<input :type="showPassword?'text':'password'" v-model="password" placeholder="请输入密码" @input="passwordInput" maxlength="20"
+				<input type="text" v-model="password" placeholder="请输入密码"  maxlength="20"
+				v-if="!showPassword"
 					placeholder-class="input-placeholder" />
+					<input type="password" v-model="password" placeholder="请输入密码"  maxlength="20"
+					v-else
+						placeholder-class="input-placeholder" />
 				<view class="right os-center" @click="showPassword=!showPassword">
-					<image v-if="passwordShow" src="/static/other/4.png" mode="widthFix"></image>
+					<image v-if="password" src="/static/other/4.png" mode="widthFix"></image>
 				</view>
 			</view>
 			<view class="lower1" @click="register">
@@ -43,6 +47,9 @@
 			<view class="login-btn" @click="submit">
 				<text>登录</text>
 			</view>
+			<!-- <view class="login-btn" @click="wxsubmit">
+				<text>微信登录</text>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -59,10 +66,6 @@
 		},
 		methods: {
 
-			//密码框输入事件
-			passwordInput(e) {
-				this.passwordShow = e.detail.value=='' ? false : true
-			},
 
 			//密码状态 隐藏/显示
 			passwordStatus() {
@@ -73,7 +76,28 @@
 					url:'../register/register'
 				})
 			},
+			wxsubmit(){
+				uni.login({
+					success: (res) => {
+						uniCloud.callFunction({
+							name:'user-center',
+							data:{
+								action:'loginByWeixin',
+								params:{
+									code:res.code
+								}
+							},
+							// success: (result) => {
+							// 	console.log(result,'sult')
+							// }
+						})
+					}
+				})
+				
+				
+			},
 			submit(){
+				uni.showLoading()
 				uniCloud.callFunction({
 					name:'user-center',
 					data:{
@@ -84,6 +108,7 @@
 						}
 					},
 					success: (res) => {
+						uni.hideLoading()
 						if(res.result.code==0){
 							uni.setStorageSync('uniIdToken',res.result.token)
 							uni.setStorageSync('uid',res.result.uid)
@@ -91,6 +116,11 @@
 							getApp().globalData.uniLogin = false
 							uni.switchTab({
 								url:'../index/index'
+							})
+						}else{
+							uni.showToast({
+								title:res.result.message,
+								icon:'none'
 							})
 						}
 					}
